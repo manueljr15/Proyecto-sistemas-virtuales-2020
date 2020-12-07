@@ -1,0 +1,334 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SistemasVirtualesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Admins">
+          <Key>
+            <PropertyRef Name="id_Admi" />
+          </Key>
+          <Property Name="id_Admi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="correo" Type="varchar" MaxLength="200" />
+          <Property Name="pwd" Type="varchar" MaxLength="200" />
+          <Property Name="usuario" Type="varchar" MaxLength="200" />
+          <Property Name="nombre" Type="varchar" MaxLength="200" />
+          <Property Name="ap_pat" Type="varchar" MaxLength="200" />
+          <Property Name="ap_mat" Type="varchar" MaxLength="200" />
+          <Property Name="puesto" Type="varchar" MaxLength="200" />
+          <Property Name="rol" Type="int" />
+        </EntityType>
+        <EntityType Name="Alumnos">
+          <Key>
+            <PropertyRef Name="id_Alumnos" />
+          </Key>
+          <Property Name="id_Alumnos" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="matricula" Type="varchar" MaxLength="200" />
+          <Property Name="nombre" Type="varchar" MaxLength="200" />
+          <Property Name="ap_pat" Type="varchar" MaxLength="200" />
+          <Property Name="ap_mat" Type="varchar" MaxLength="200" />
+          <Property Name="carrera" Type="varchar" MaxLength="200" />
+          <Property Name="birthday" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Docentes">
+          <Key>
+            <PropertyRef Name="id_Docente" />
+          </Key>
+          <Property Name="id_Docente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="200" />
+          <Property Name="ap_pat" Type="varchar" MaxLength="200" />
+          <Property Name="ap_mat" Type="varchar" MaxLength="200" />
+          <Property Name="status" Type="int" />
+          <Property Name="correo" Type="varchar" MaxLength="200" />
+          <Property Name="pwd" Type="varchar" MaxLength="200" />
+          <Property Name="rol" Type="int" />
+        </EntityType>
+        <EntityType Name="Semestre">
+          <Key>
+            <PropertyRef Name="id_semestre" />
+          </Key>
+          <Property Name="id_semestre" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="inicio" Type="datetime" />
+          <Property Name="fin" Type="datetime" />
+          <Property Name="folio" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Tutores_Alumnos">
+          <Key>
+            <PropertyRef Name="id_relacion" />
+          </Key>
+          <Property Name="id_relacion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_Alumno" Type="int" />
+          <Property Name="id_Docente" Type="int" />
+          <Property Name="id_Semetre" Type="int" />
+        </EntityType>
+        <Association Name="FK_Tutores_Alumnos_Alumnos">
+          <End Role="Alumnos" Type="Self.Alumnos" Multiplicity="0..1" />
+          <End Role="Tutores_Alumnos" Type="Self.Tutores_Alumnos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alumnos">
+              <PropertyRef Name="id_Alumnos" />
+            </Principal>
+            <Dependent Role="Tutores_Alumnos">
+              <PropertyRef Name="id_Alumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tutores_Alumnos_Docentes">
+          <End Role="Docentes" Type="Self.Docentes" Multiplicity="0..1" />
+          <End Role="Tutores_Alumnos" Type="Self.Tutores_Alumnos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Docentes">
+              <PropertyRef Name="id_Docente" />
+            </Principal>
+            <Dependent Role="Tutores_Alumnos">
+              <PropertyRef Name="id_Docente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tutores_Alumnos_Semestre">
+          <End Role="Semestre" Type="Self.Semestre" Multiplicity="0..1" />
+          <End Role="Tutores_Alumnos" Type="Self.Tutores_Alumnos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Semestre">
+              <PropertyRef Name="id_semestre" />
+            </Principal>
+            <Dependent Role="Tutores_Alumnos">
+              <PropertyRef Name="id_Semetre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SistemasVirtualesModelStoreContainer">
+          <EntitySet Name="Admins" EntityType="Self.Admins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Alumnos" EntityType="Self.Alumnos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Docentes" EntityType="Self.Docentes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Semestre" EntityType="Self.Semestre" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tutores_Alumnos" EntityType="Self.Tutores_Alumnos" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Tutores_Alumnos_Alumnos" Association="Self.FK_Tutores_Alumnos_Alumnos">
+            <End Role="Alumnos" EntitySet="Alumnos" />
+            <End Role="Tutores_Alumnos" EntitySet="Tutores_Alumnos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tutores_Alumnos_Docentes" Association="Self.FK_Tutores_Alumnos_Docentes">
+            <End Role="Docentes" EntitySet="Docentes" />
+            <End Role="Tutores_Alumnos" EntitySet="Tutores_Alumnos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tutores_Alumnos_Semestre" Association="Self.FK_Tutores_Alumnos_Semestre">
+            <End Role="Semestre" EntitySet="Semestre" />
+            <End Role="Tutores_Alumnos" EntitySet="Tutores_Alumnos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SistemasVirtualesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Admins">
+          <Key>
+            <PropertyRef Name="id_Admi" />
+          </Key>
+          <Property Name="id_Admi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="correo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="pwd" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="usuario" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ap_pat" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ap_mat" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="puesto" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="rol" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Alumnos">
+          <Key>
+            <PropertyRef Name="id_Alumnos" />
+          </Key>
+          <Property Name="id_Alumnos" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="matricula" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ap_pat" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ap_mat" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="carrera" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="birthday" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Tutores_Alumnos" Relationship="Self.FK_Tutores_Alumnos_Alumnos" FromRole="Alumnos" ToRole="Tutores_Alumnos" />
+        </EntityType>
+        <EntityType Name="Docentes">
+          <Key>
+            <PropertyRef Name="id_Docente" />
+          </Key>
+          <Property Name="id_Docente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ap_pat" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ap_mat" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="Int32" />
+          <Property Name="correo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="pwd" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="rol" Type="Int32" />
+          <NavigationProperty Name="Tutores_Alumnos" Relationship="Self.FK_Tutores_Alumnos_Docentes" FromRole="Docentes" ToRole="Tutores_Alumnos" />
+        </EntityType>
+        <EntityType Name="Semestre">
+          <Key>
+            <PropertyRef Name="id_semestre" />
+          </Key>
+          <Property Name="id_semestre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="inicio" Type="DateTime" Precision="3" />
+          <Property Name="fin" Type="DateTime" Precision="3" />
+          <Property Name="folio" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tutores_Alumnos" Relationship="Self.FK_Tutores_Alumnos_Semestre" FromRole="Semestre" ToRole="Tutores_Alumnos" />
+        </EntityType>
+        <EntityType Name="Tutores_Alumnos">
+          <Key>
+            <PropertyRef Name="id_relacion" />
+          </Key>
+          <Property Name="id_relacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_Alumno" Type="Int32" />
+          <Property Name="id_Docente" Type="Int32" />
+          <Property Name="id_Semetre" Type="Int32" />
+          <NavigationProperty Name="Alumnos" Relationship="Self.FK_Tutores_Alumnos_Alumnos" FromRole="Tutores_Alumnos" ToRole="Alumnos" />
+          <NavigationProperty Name="Docentes" Relationship="Self.FK_Tutores_Alumnos_Docentes" FromRole="Tutores_Alumnos" ToRole="Docentes" />
+          <NavigationProperty Name="Semestre" Relationship="Self.FK_Tutores_Alumnos_Semestre" FromRole="Tutores_Alumnos" ToRole="Semestre" />
+        </EntityType>
+        <Association Name="FK_Tutores_Alumnos_Alumnos">
+          <End Role="Alumnos" Type="Self.Alumnos" Multiplicity="0..1" />
+          <End Role="Tutores_Alumnos" Type="Self.Tutores_Alumnos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alumnos">
+              <PropertyRef Name="id_Alumnos" />
+            </Principal>
+            <Dependent Role="Tutores_Alumnos">
+              <PropertyRef Name="id_Alumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tutores_Alumnos_Docentes">
+          <End Role="Docentes" Type="Self.Docentes" Multiplicity="0..1" />
+          <End Role="Tutores_Alumnos" Type="Self.Tutores_Alumnos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Docentes">
+              <PropertyRef Name="id_Docente" />
+            </Principal>
+            <Dependent Role="Tutores_Alumnos">
+              <PropertyRef Name="id_Docente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tutores_Alumnos_Semestre">
+          <End Role="Semestre" Type="Self.Semestre" Multiplicity="0..1" />
+          <End Role="Tutores_Alumnos" Type="Self.Tutores_Alumnos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Semestre">
+              <PropertyRef Name="id_semestre" />
+            </Principal>
+            <Dependent Role="Tutores_Alumnos">
+              <PropertyRef Name="id_Semetre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SistemasVirtualesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Admins" EntityType="Self.Admins" />
+          <EntitySet Name="Alumnos" EntityType="Self.Alumnos" />
+          <EntitySet Name="Docentes" EntityType="Self.Docentes" />
+          <EntitySet Name="Semestre" EntityType="Self.Semestre" />
+          <EntitySet Name="Tutores_Alumnos" EntityType="Self.Tutores_Alumnos" />
+          <AssociationSet Name="FK_Tutores_Alumnos_Alumnos" Association="Self.FK_Tutores_Alumnos_Alumnos">
+            <End Role="Alumnos" EntitySet="Alumnos" />
+            <End Role="Tutores_Alumnos" EntitySet="Tutores_Alumnos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tutores_Alumnos_Docentes" Association="Self.FK_Tutores_Alumnos_Docentes">
+            <End Role="Docentes" EntitySet="Docentes" />
+            <End Role="Tutores_Alumnos" EntitySet="Tutores_Alumnos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tutores_Alumnos_Semestre" Association="Self.FK_Tutores_Alumnos_Semestre">
+            <End Role="Semestre" EntitySet="Semestre" />
+            <End Role="Tutores_Alumnos" EntitySet="Tutores_Alumnos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SistemasVirtualesModelStoreContainer" CdmEntityContainer="SistemasVirtualesEntities">
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="SistemasVirtualesModel.Admins">
+              <MappingFragment StoreEntitySet="Admins">
+                <ScalarProperty Name="id_Admi" ColumnName="id_Admi" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="pwd" ColumnName="pwd" />
+                <ScalarProperty Name="usuario" ColumnName="usuario" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="ap_pat" ColumnName="ap_pat" />
+                <ScalarProperty Name="ap_mat" ColumnName="ap_mat" />
+                <ScalarProperty Name="puesto" ColumnName="puesto" />
+                <ScalarProperty Name="rol" ColumnName="rol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Alumnos">
+            <EntityTypeMapping TypeName="SistemasVirtualesModel.Alumnos">
+              <MappingFragment StoreEntitySet="Alumnos">
+                <ScalarProperty Name="id_Alumnos" ColumnName="id_Alumnos" />
+                <ScalarProperty Name="matricula" ColumnName="matricula" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="ap_pat" ColumnName="ap_pat" />
+                <ScalarProperty Name="ap_mat" ColumnName="ap_mat" />
+                <ScalarProperty Name="carrera" ColumnName="carrera" />
+                <ScalarProperty Name="birthday" ColumnName="birthday" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Docentes">
+            <EntityTypeMapping TypeName="SistemasVirtualesModel.Docentes">
+              <MappingFragment StoreEntitySet="Docentes">
+                <ScalarProperty Name="id_Docente" ColumnName="id_Docente" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="ap_pat" ColumnName="ap_pat" />
+                <ScalarProperty Name="ap_mat" ColumnName="ap_mat" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="pwd" ColumnName="pwd" />
+                <ScalarProperty Name="rol" ColumnName="rol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Semestre">
+            <EntityTypeMapping TypeName="SistemasVirtualesModel.Semestre">
+              <MappingFragment StoreEntitySet="Semestre">
+                <ScalarProperty Name="id_semestre" ColumnName="id_semestre" />
+                <ScalarProperty Name="inicio" ColumnName="inicio" />
+                <ScalarProperty Name="fin" ColumnName="fin" />
+                <ScalarProperty Name="folio" ColumnName="folio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tutores_Alumnos">
+            <EntityTypeMapping TypeName="SistemasVirtualesModel.Tutores_Alumnos">
+              <MappingFragment StoreEntitySet="Tutores_Alumnos">
+                <ScalarProperty Name="id_relacion" ColumnName="id_relacion" />
+                <ScalarProperty Name="id_Alumno" ColumnName="id_Alumno" />
+                <ScalarProperty Name="id_Docente" ColumnName="id_Docente" />
+                <ScalarProperty Name="id_Semetre" ColumnName="id_Semetre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
